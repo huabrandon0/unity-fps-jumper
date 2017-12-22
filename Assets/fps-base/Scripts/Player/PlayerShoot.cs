@@ -133,7 +133,6 @@ public class PlayerShoot : TakesInput {
             {
                 // Play hit effect
                 HitEffects(hit.point, hit.normal);
-                Debug.Log("hit effect on: " + hit.transform.name);
             }
         }
         else if (currentWeapon.type == "projectile")

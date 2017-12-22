@@ -47,4 +47,9 @@ abstract public class TakesInput : MonoBehaviour {
 
     // Reset the script to its original state; should be called in OnEnable()
     abstract protected void SetDefaultState();
+
+    public void ResetState()
+    {
+        SetDefaultState();
+    }
 }

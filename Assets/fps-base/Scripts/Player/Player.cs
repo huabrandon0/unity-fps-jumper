@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     [SerializeField] private int maxHealth = 100;
     [SerializeField] private int health;
     [SerializeField] private bool isDead = false;
+    private TakesInput[] scriptsToReset;
 
     public bool IsDead
     {
@@ -15,9 +16,10 @@ public class Player : MonoBehaviour
     }
 
 	// Use this for initialization
-	void Start ()
+	void Awake ()
 	{
         this.health = this.maxHealth;
+        this.scriptsToReset = this.gameObject.GetComponentsInChildren<TakesInput>();
 	}
 
     public void TakeDamage(int amt)
@@ -32,5 +34,11 @@ public class Player : MonoBehaviour
             this.health = 0;
             IsDead = true;
         }
+    }
+
+    public void ResetState()
+    {
+        foreach (TakesInput script in scriptsToReset)
+            script.ResetState();
     }
 }

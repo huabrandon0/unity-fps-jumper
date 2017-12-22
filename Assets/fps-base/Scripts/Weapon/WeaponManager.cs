@@ -54,8 +54,8 @@ public class WeaponManager : TakesInput {
     {
         ClearInput();
         this.weps = new List<Weapon>(this.defWeps);
+        this.currWepIndex = 0;
         EquipWeapon(this.weps[0]);
-
     }
 
     void Awake()

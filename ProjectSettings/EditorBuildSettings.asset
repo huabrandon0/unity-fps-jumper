@@ -4,4 +4,10 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/fps-base/Scenes/MainMenu.unity
+    guid: b6e3fc46ee85dea42b0a9f62336c8a8b
+  - enabled: 1
+    path: Assets/fps-base/Scenes/PrototypeScene.unity
+    guid: 4a5d2493e67c73144b0c26b4d731e3d6
