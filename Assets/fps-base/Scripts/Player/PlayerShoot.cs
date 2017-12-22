@@ -20,6 +20,7 @@ public class PlayerShoot : TakesInput {
     private bool isShooting = false;
     private Coroutine shootCoroutine = null;
     private Weapon currentWeapon;
+    private float timeLastShot = float.MinValue;
 
     // Constant member variables
     [SerializeField] private WeaponManager weaponManager;
@@ -54,6 +55,7 @@ public class PlayerShoot : TakesInput {
         this.CanShoot = true;
         this.isShooting = false;
         StopShootCoroutine();
+        this.timeLastShot = float.MinValue;
 
         this.currentWeapon = this.weaponManager.GetCurrentWeapon();
     }
@@ -90,9 +92,10 @@ public class PlayerShoot : TakesInput {
             if (this.currentWeapon.fireRate <= 0f)
             {
                 // Tap fire
-                if (this.shootKeyDown)
+                if (this.shootKeyDown && (Time.time >= this.timeLastShot + this.currentWeapon.cooldown))
                 {
                     Shoot();
+                    this.timeLastShot = Time.time;
                 }
             }
             else
@@ -141,7 +144,10 @@ public class PlayerShoot : TakesInput {
                 this.camToShootFrom.transform.position + this.camToShootFrom.transform.forward * this.projectileSpawnOffset,
                 Quaternion.LookRotation(this.camToShootFrom.transform.forward));
             projectile.GetComponent<Rigidbody>().velocity = projectile.transform.forward * this.currentWeapon.projectileSpeed;
-            Physics.IgnoreCollision(projectile.GetComponent<Collider>(), this.gameObject.GetComponent<Collider>()); // Assumes the character controller collider is the only existing one on the shooter
+  
+            // Note: remember to set up Physics to ignore layer collisions between Projectile and the following:
+            // Player, Viewmodel, Projectile, TriggerZone
+
             Destroy(projectile, 3.0f);
         }
         else

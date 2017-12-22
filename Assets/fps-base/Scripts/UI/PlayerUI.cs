@@ -4,6 +4,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerUI : MonoBehaviour {
 
@@ -16,6 +17,12 @@ public class PlayerUI : MonoBehaviour {
     [SerializeField] private GameObject tabMenu = null;
     [SerializeField] private TakesInput[] disableWhileTabbed;
 
+    private bool isInVictoryScreen;
+    [SerializeField] private GameObject victoryScreen = null;
+    [SerializeField] private Text victoryText;
+    [SerializeField] private TakesInput[] disableWhileInVictoryScreen;
+
+
     void Awake()
     {
         if (this.pauseMenu == null)
@@ -26,42 +33,48 @@ public class PlayerUI : MonoBehaviour {
 
         if (this.tabMenu == null)
             Debug.LogError(GetType() + ": No tab menu object assigned");
-
-        UnpauseScreen();
-        UntabScreen();
+        
+        DisableScreens();
+        HideCursor();
     }
 
     void Update ()
     {
-        // FIX LATER: change menu keycode to Esc only on the actual build
-        // Unity has weird hotkeys built-in the game tab, so we're using "T" in the meantime.
-        if (Input.GetKeyDown(KeyCode.T) || Input.GetKeyDown(KeyCode.Escape))
+
+        if (!this.isInVictoryScreen)
         {
-            if (!this.isPaused)
+            // FIX LATER: change menu keycode to Esc only on the actual build
+            // Unity has weird hotkeys built-in the game tab, so we're using "T" in the meantime.
+            if (Input.GetKeyDown(KeyCode.T) || Input.GetKeyDown(KeyCode.Escape))
             {
-                if (this.isTabbed)
-                    UntabScreen();
+                if (!this.isPaused)
+                {
+                    if (this.isTabbed)
+                        UntabScreen();
 
-                PauseScreen();
+                    PauseScreen();
+                }
+                else
+                    UnpauseScreen();
             }
-            else
-                UnpauseScreen();
-        }
 
-        if (Input.GetKeyDown(KeyCode.Tab) && !this.isPaused)
-        {
-            if (!this.isTabbed)
-                TabScreen();
-            else
-                UntabScreen();
+            if (Input.GetKeyDown(KeyCode.Tab) && !this.isPaused)
+            {
+                if (!this.isTabbed)
+                    TabScreen();
+                else
+                    UntabScreen();
+            }
         }
     }
 
     public void PauseScreen()
     {
+        // Undo other screens
+        DisableScreens();
+
         // Unlock and show cursor
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        ShowCursor();
 
         // Disable Player's controls
         DisableInputs(this.disableWhilePaused);
@@ -74,9 +87,11 @@ public class PlayerUI : MonoBehaviour {
 
     public void UnpauseScreen()
     {
+        if (!this.isPaused)
+            return;
+
         // Lock and hide cursor
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        HideCursor();
 
         // Enable Player's controls
         EnableInputs(this.disableWhilePaused);
@@ -90,9 +105,11 @@ public class PlayerUI : MonoBehaviour {
 
     public void TabScreen()
     {
+        // Undo other screens
+        DisableScreens();
+
         // Unlock and show cursor
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        ShowCursor();
 
         // Disable Player's controls
         DisableInputs(this.disableWhileTabbed);
@@ -105,9 +122,11 @@ public class PlayerUI : MonoBehaviour {
 
     public void UntabScreen()
     {
+        if (!this.isTabbed)
+            return;
+
         // Lock and hide cursor
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        HideCursor();
 
         // Enable Player's controls
         EnableInputs(this.disableWhileTabbed);
@@ -118,15 +137,71 @@ public class PlayerUI : MonoBehaviour {
         this.isTabbed = false;
     }
 
-    void DisableInputs(TakesInput[] tis)
+    public void VictoryScreen(string txt)
+    {
+        // Undo other screens
+        DisableScreens();
+
+        // Unlock and show cursor
+        ShowCursor();
+
+        // Disable Player's controls
+        DisableInputs(this.disableWhileInVictoryScreen);
+
+        // Change victory text
+        this.victoryText.text = txt;
+
+        // Enable victory screen
+        this.victoryScreen.SetActive(true);
+
+        this.isInVictoryScreen = true;
+    }
+
+    public void UnVictoryScreen()
+    {
+        if (!this.isInVictoryScreen)
+            return;
+
+        // Lock and hide cursor
+        HideCursor();
+
+        // Enable Player's controls
+        EnableInputs(this.disableWhileInVictoryScreen);
+
+        // Disable victory screen
+        this.victoryScreen.SetActive(false);
+
+        this.isInVictoryScreen = false;
+    }
+
+    private void DisableInputs(TakesInput[] tis)
     {
         for (int i = 0; i < tis.Length; i++)
             tis[i].DisableInput();
     }
 
-    void EnableInputs(TakesInput[] tis)
+    private void EnableInputs(TakesInput[] tis)
     {
         for (int i = 0; i < tis.Length; i++)
             tis[i].EnableInput();
+    }
+
+    private void ShowCursor()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    private void HideCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    private void DisableScreens()
+    {
+        UnpauseScreen();
+        UntabScreen();
+        UnVictoryScreen();
     }
 }

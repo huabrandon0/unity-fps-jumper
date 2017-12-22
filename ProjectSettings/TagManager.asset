@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Projectile
   - EndZone
+  - StartZone
   layers:
   - Default
   - TransparentFX
@@ -18,8 +19,8 @@ TagManager:
   - Player
   - Viewmodel
   - RestartZone
-  - 
-  - 
+  - Projectile
+  - TriggerZone
   - 
   - 
   - 

@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4956517910261302}
   - component: {fileID: 33877774522561576}
   - component: {fileID: 23646849697570802}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 136533079033767782}
   - component: {fileID: 114377249027350386}
   - component: {fileID: 54099603681991508}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Rocket
   m_TagString: Projectile
   m_Icon: {fileID: 0}
@@ -54,7 +54,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4924417762561114}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71,7 +71,7 @@ GameObject:
   - component: {fileID: 4818883667840302}
   - component: {fileID: 33713281516099640}
   - component: {fileID: 23129213977298176}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 4926201174775838}
   - component: {fileID: 33392647179528400}
   - component: {fileID: 23901884852133902}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -316,6 +316,9 @@ MonoBehaviour:
   explosionRadius: 4
   explosionForce: 200
   pushbackForce: 15
+  affectedLayers:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!136 &136533079033767782
 CapsuleCollider:
   m_ObjectHideFlags: 1

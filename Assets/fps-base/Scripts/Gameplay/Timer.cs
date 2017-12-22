@@ -7,33 +7,60 @@ public class Timer : MonoBehaviour {
 
     private float startTime = 0f;
     private float runningTime = 0f;
-    private bool stop = false;
+    private bool pause = false;
+    private float pauseStartTime = 0f;
 
     public Text timeText;
 
-	// Use this for initialization
 	void Start () {
         ResetTime();
 	}
 	
-	// Update is called once per frame
     void Update () {
-        if (this.stop)
+        if (this.pause)
             return;
         
         this.runningTime = Time.time - this.startTime;
-        System.TimeSpan t = System.TimeSpan.FromSeconds(this.runningTime);
-        timeText.text = string.Format("{0:00}:{1:00}.{2:000}", t.Minutes, t.Seconds, t.Milliseconds);
+        UpdateText(this.runningTime);
 	}
+
+    public float GetRunningTime()
+    {
+        return this.runningTime;
+    }
 
     public void ResetTime()
     {
         this.startTime = Time.time;
-        this.stop = false;
+        this.pauseStartTime = Time.time;
+
+        this.runningTime = 0f;
+        UpdateText(0f);
     }
 
-    public void StopTime()
+    public void PauseTime()
     {
-        this.stop = true;
+        if (this.pause)
+            return;
+
+        this.pause = true;
+        this.pauseStartTime = Time.time;
+    }
+
+    public void StartTime()
+    {
+        if (!this.pause)
+            return;
+
+        this.pause = false;
+
+        // Increase startTime to account for the time spent paused
+        this.startTime += Time.time - this.pauseStartTime;
+    }
+
+    private void UpdateText(float time)
+    {
+        System.TimeSpan ts = System.TimeSpan.FromSeconds(time);
+        timeText.text = string.Format("{0:00}:{1:00}.{2:000}", ts.Minutes, ts.Seconds, ts.Milliseconds);
     }
 }

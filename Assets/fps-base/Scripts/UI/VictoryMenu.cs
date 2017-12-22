@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PauseMenu : MonoBehaviour {
+public class VictoryMenu : MonoBehaviour {
 
-    public PlayerUI uiScript;
+    public GameManager gmScript;
     public string homeScene;
 
-    public void Resume()
+    public void ResetGame()
     {
-        uiScript.UnpauseScreen();
+        this.gmScript.ResetGame();
     }
 
     public void LoadHomeScreen()
