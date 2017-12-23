@@ -1,7 +1,6 @@
 ﻿// Usage: this script is meant to be placed on a Player.
 // The Player must be assigned a Camera to shoot from.
 // A WeaponManager component must be present.
-// An FPCamera script must be assigned for its zooming capabilities.
 
 using System.Collections;
 using System.Collections.Generic;
@@ -13,7 +12,6 @@ public class PlayerShoot : TakesInput {
     // Input state
     private bool shootKeyDown = false;
     private bool shootKeyUp = false;
-    private bool zoom = false;
 
     // Inconstant member variables
     public bool CanShoot { get; private set; }
@@ -26,7 +24,6 @@ public class PlayerShoot : TakesInput {
     [SerializeField] private WeaponManager weaponManager;
     [SerializeField] private LayerMask shootableMask;
     [SerializeField] private Camera camToShootFrom;
-    [SerializeField] private FPCamera camScript;
     [SerializeField] private float projectileSpawnOffset = 1.0f;
 
     protected override void GetInput()
@@ -36,8 +33,6 @@ public class PlayerShoot : TakesInput {
 
         this.shootKeyDown = InputManager.GetKeyDown("Attack1");
         this.shootKeyUp = InputManager.GetKeyUp("Attack1");
-
-        this.zoom = InputManager.GetKeyDown("Zoom");
     }
 
     protected override void ClearInput()
@@ -81,10 +76,6 @@ public class PlayerShoot : TakesInput {
         GetInput();
 
         this.currentWeapon = this.weaponManager.GetCurrentWeapon();
-        if (this.camScript.IsZoomed && !this.currentWeapon.isZoomable)
-        {
-            this.camScript.Unzoom();
-        }
 
         // Shoot
         if (this.CanShoot)
@@ -112,15 +103,6 @@ public class PlayerShoot : TakesInput {
                     StopShootCoroutine();
                 }
             }
-        }
-
-        // Zoom
-        if (this.zoom && this.currentWeapon.isZoomable)
-        {
-            if (this.camScript.IsZoomed)
-                this.camScript.Unzoom();
-            else
-                this.camScript.Zoom();
         }
     }
 
@@ -156,12 +138,13 @@ public class PlayerShoot : TakesInput {
 
     void ShootEffects()
     {
-        this.weaponManager.GetCurrentWeaponEffects().muzzleFlash.Play();
+        this.weaponManager.GetCurrentWeaponEffects().MuzzleFlash.Play();
+        this.weaponManager.GetCurrentWeaponAnimator().SetTrigger("shoot");
     }
 
     void HitEffects(Vector3 pos, Vector3 normal)
     {
-        GameObject bulletImpact = Instantiate(this.weaponManager.GetCurrentWeaponEffects().bulletImpact, pos, Quaternion.LookRotation(normal));
+        GameObject bulletImpact = Instantiate(this.weaponManager.GetCurrentWeaponEffects().BulletImpactPrefab, pos, Quaternion.LookRotation(normal));
         Destroy(bulletImpact, 1f);
     }
 

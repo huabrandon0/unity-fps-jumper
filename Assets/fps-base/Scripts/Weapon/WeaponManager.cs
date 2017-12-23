@@ -15,12 +15,14 @@ public class WeaponManager : TakesInput {
     private Weapon currentWeapon;
     private GameObject weaponModel;
     private WeaponEffects weaponEffects;
+    private Animator weaponAnimator;
 
     public List<Weapon> weps;
     private int currWepIndex;
 
     // Constant member variables
     [SerializeField] private PlayerShoot shootScript;
+    [SerializeField] private FPCamera camScript;
     [SerializeField] private Transform weaponBase;
     [SerializeField] private string viewmodelLayerName = "Viewmodel";
 
@@ -63,7 +65,16 @@ public class WeaponManager : TakesInput {
         GetDefaultState();
 
         if (this.shootScript == null)
+        {
             Debug.LogError(GetType() + ": no shoot script assigned");
+            this.enabled = false;
+        }
+
+        if (this.camScript == null)
+        {
+            Debug.LogError(GetType() + ": no camera script assigned");
+            this.enabled = false;
+        }
     }
 
     void OnEnable()
@@ -103,6 +114,13 @@ public class WeaponManager : TakesInput {
         this.weaponEffects = this.weaponModel.GetComponent<WeaponEffects>();
         if (this.weaponEffects == null)
             Debug.LogError(GetType() + ": weapon model does not have a WeaponEffects script attached");
+
+        this.weaponAnimator = this.weaponModel.GetComponent<Animator>();
+        if (this.weaponAnimator == null)
+            Debug.LogError(GetType() + ": weapon model does nto have an Animator component");
+
+        if (this.camScript.IsZoomed)
+            this.camScript.Unzoom();
     }
 
     public Weapon GetCurrentWeapon()
@@ -113,5 +131,10 @@ public class WeaponManager : TakesInput {
     public WeaponEffects GetCurrentWeaponEffects()
     {
         return this.weaponEffects;
+    }
+
+    public Animator GetCurrentWeaponAnimator()
+    {
+        return this.weaponAnimator;
     }
 }

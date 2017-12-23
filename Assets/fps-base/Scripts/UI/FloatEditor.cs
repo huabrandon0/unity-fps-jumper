@@ -15,7 +15,6 @@ public class FloatEditor : MonoBehaviour {
     {
         this.minVal = this.slider.minValue;
         this.maxVal = this.slider.maxValue;
-        SetValue(this.slider.value);
     }
 
     // Sets the value to newVal if it is within bounds. Updates UI elements to reflect the value
@@ -35,12 +34,6 @@ public class FloatEditor : MonoBehaviour {
         return withinBounds;
     }
 
-    public void SetLabel(string str)
-    {
-        this.label.text = str;
-        this.name = str + " Editor";
-    }
-
     // Sets the bounds of the value. Clamps the currnet value if needed.
     public void SetBounds(float min, float max)
     {
@@ -58,12 +51,6 @@ public class FloatEditor : MonoBehaviour {
         {
             SetValue(this.minVal);
         }
-    }
-
-    public void AddListeners(UnityAction<float> floatSetter, UnityAction<string> stringSetter)
-    {
-        this.slider.onValueChanged.AddListener(floatSetter);
-        this.inputField.onEndEdit.AddListener(stringSetter);
     }
 
     public void RefreshUI()

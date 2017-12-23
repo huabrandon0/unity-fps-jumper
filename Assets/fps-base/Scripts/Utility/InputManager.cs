@@ -5,22 +5,11 @@ public static class InputManager {
 
     private static Dictionary<string, KeyCode[]> keybinds;
 
-    static InputManager()
-    {
-        InitializeKeybinds();
-    }
+    public static float sens = 1f;
+    public static float zoomedSens = 0.5f;
+    public static float fov = 80f;
+    public static float zoomedFov = 40f;
 
-    private static void InitializeKeybinds()
-    {
-        keybinds = new Dictionary<string, KeyCode[]>();
-        for (int i = 0; i < defaultKeys.Length; i++)
-        {
-            keybinds.Add(defaultKeys[i], defaultValues[i]);
-        }
-
-        // TODO: check if there are stored keybinds (i.e. in a config file)
-    }
-    
     private static string[] defaultKeys = new string[]
     {
         "Attack1",
@@ -58,6 +47,23 @@ public static class InputManager {
         new KeyCode[2]{ KeyCode.Alpha3, KeyCode.None },
         new KeyCode[2]{ KeyCode.F, KeyCode.None }
     };
+
+
+    static InputManager()
+    {
+        InitializeKeybinds();
+    }
+
+    private static void InitializeKeybinds()
+    {
+        keybinds = new Dictionary<string, KeyCode[]>();
+        for (int i = 0; i < defaultKeys.Length; i++)
+        {
+            keybinds.Add(defaultKeys[i], defaultValues[i]);
+        }
+
+        // TODO: check if there are stored keybinds (i.e. in a config file)
+    }
 
     public static bool GetKeyDown(string key)
     {

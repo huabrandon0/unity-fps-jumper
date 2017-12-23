@@ -4,14 +4,23 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour {
 
+    public GameObject explosionPrefab;
     public float explosionRadius = 4f;
     public float explosionForce = 200f;
     public float pushbackForce = 15f;
     public LayerMask affectedLayers;
+    public GameObject particles;
+
+    void Start()
+    {
+        Invoke("EnableParticles", 0.2f);
+    }
 
     void OnTriggerEnter(Collider other)
     {
         Destroy(this.gameObject);
+
+        Instantiate(explosionPrefab, this.transform.position, this.transform.rotation);
 
         var hitColliders = Physics.OverlapSphere(this.transform.position, this.explosionRadius, this.affectedLayers);
         bool hasHitPlayer = false;
@@ -37,5 +46,10 @@ public class Projectile : MonoBehaviour {
             if (pm != null)
                 pm.AddMoveForce(disp.normalized * this.pushbackForce * forceScale);
         }
+    }
+
+    void EnableParticles()
+    {
+        particles.SetActive(true);
     }
 }
