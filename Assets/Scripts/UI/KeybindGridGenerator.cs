@@ -18,8 +18,7 @@ public class KeybindGridGenerator : MonoBehaviour {
 
     void Start()
     {
-        this.keybinds = InputManager.GetKeybindDictionary();
-        DrawInitialGrid();
+        DrawGrid();
     }
     
     void Update()
@@ -43,8 +42,15 @@ public class KeybindGridGenerator : MonoBehaviour {
         }
     }
     
-    void DrawInitialGrid()
+    public void DrawGrid()
     {
+        foreach (Transform child in this.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        this.keybinds = InputManager.GetKeybindDictionary();
+
         foreach(KeyValuePair<string, KeyCode[]> entry in this.keybinds)
         {
             //Debug.Log(entry.Key + ": " + entry.Value[0] + ", " + entry.Value[1]);

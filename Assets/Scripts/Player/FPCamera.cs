@@ -38,7 +38,7 @@ public class FPCamera : TakesInput {
             return;
 
         // Retrieve mouse input
-        float sens = this.IsZoomed ? InputManager.zoomedSens : InputManager.sens;
+        float sens = this.IsZoomed ? InputManager.ZoomSensitivity : InputManager.Sensitivity;
         this.xRot -= Input.GetAxis("Mouse Y") * sens;
         this.yRot += Input.GetAxis("Mouse X") * sens;
 
@@ -79,7 +79,7 @@ public class FPCamera : TakesInput {
             Debug.LogError(GetType() + ": player transform is not initialized.");
     }
 
-    void OnEnable()
+    void Start()
     {
         SetDefaultState();
     }
@@ -113,7 +113,7 @@ public class FPCamera : TakesInput {
             return;
 
         this.IsZoomed = true;
-        this.cam.fieldOfView = InputManager.zoomedFov;
+        this.cam.fieldOfView = InputManager.ZoomFov;
         this.scopeOverlay.SetActive(true);
         this.viewmodelCam.enabled = false;
     }
@@ -124,7 +124,7 @@ public class FPCamera : TakesInput {
             return;
 
         this.IsZoomed = false;
-        this.cam.fieldOfView = InputManager.fov;
+        this.cam.fieldOfView = InputManager.Fov;
         this.scopeOverlay.SetActive(false);
         this.viewmodelCam.enabled = true;
     }
@@ -132,8 +132,8 @@ public class FPCamera : TakesInput {
     public void RefreshFov()
     {
         if (this.IsZoomed)
-            this.cam.fieldOfView = InputManager.zoomedFov;
+            this.cam.fieldOfView = InputManager.ZoomFov;
         else
-            this.cam.fieldOfView = InputManager.fov;
+            this.cam.fieldOfView = InputManager.Fov;
     }
 }
