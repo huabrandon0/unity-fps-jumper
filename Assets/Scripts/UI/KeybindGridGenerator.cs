@@ -33,7 +33,7 @@ public class KeybindGridGenerator : MonoBehaviour {
                 {
                     //Debug.Log("New keybind: " + this.keyToSet + ", " + keycode.ToString() + ", " + this.valIndex);
                     // Update the InputManager and button text on the menu to reflect the keybind change
-                    InputManager.OverwriteKeybind(this.keyToSet, keycode, this.valIndex);
+                    InputManager.instance.OverwriteKeybind(this.keyToSet, keycode, this.valIndex);
                     this.valButton.GetComponentInChildren<Text>().text = keycode.ToString();
                     this.isSettingKeybind = false;
                     break;
@@ -49,7 +49,7 @@ public class KeybindGridGenerator : MonoBehaviour {
             Destroy(child.gameObject);
         }
 
-        this.keybinds = InputManager.GetKeybindDictionary();
+        this.keybinds = InputManager.instance.Keybinds;
 
         foreach(KeyValuePair<string, KeyCode[]> entry in this.keybinds)
         {
@@ -59,7 +59,7 @@ public class KeybindGridGenerator : MonoBehaviour {
             keyText.transform.SetParent(this.transform, false);
             keyText.GetComponent<Text>().text = key;
 
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < entry.Value.Length; i++)
             {
                 int index = i;
                 KeyCode val = entry.Value[index];

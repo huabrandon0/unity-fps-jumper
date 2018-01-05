@@ -31,8 +31,8 @@ public class PlayerShoot : TakesInput {
         if (!this.canReadInput)
             return;
 
-        this.shootKeyDown = InputManager.GetKeyDown("Attack1");
-        this.shootKeyUp = InputManager.GetKeyUp("Attack1");
+        this.shootKeyDown = InputManager.instance.GetKeyDown("Attack1");
+        this.shootKeyUp = InputManager.instance.GetKeyUp("Attack1");
     }
 
     protected override void ClearInput()

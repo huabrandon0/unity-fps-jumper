@@ -23,13 +23,13 @@ public class GameplayPanel : MonoBehaviour {
     public void SetSensitivity(float sens)
     {
         if (this.feSens.SetValue(sens))
-            InputManager.Sensitivity = sens;
+            InputManager.instance.Sensitivity = sens;
     }
 
     public void SetFov(float fov)
     {
         if (this.feFov.SetValue(fov))
-            InputManager.Fov = fov;
+            InputManager.instance.Fov = fov;
 
         UpdateCameraFov();
     }
@@ -37,13 +37,13 @@ public class GameplayPanel : MonoBehaviour {
     public void SetZoomedSensitivity(float sens)
     {
         if (this.feZoomedSens.SetValue(sens))
-            InputManager.ZoomSensitivity = sens;
+            InputManager.instance.ZoomSensitivity = sens;
     }
 
     public void SetZoomedFov(float fov)
     {
         if (this.feZoomedFov.SetValue(fov))
-            InputManager.ZoomFov = fov;
+            InputManager.instance.ZoomFov = fov;
 
         UpdateCameraFov();
     }
@@ -70,10 +70,10 @@ public class GameplayPanel : MonoBehaviour {
 
     public void RefreshFloatsUI()
     {
-        feSens.SetValue(InputManager.Sensitivity);
-        feFov.SetValue(InputManager.Fov);
-        feZoomedSens.SetValue(InputManager.ZoomSensitivity);
-        feZoomedFov.SetValue(InputManager.ZoomFov);
+        feSens.SetValue(InputManager.instance.Sensitivity);
+        feFov.SetValue(InputManager.instance.Fov);
+        feZoomedSens.SetValue(InputManager.instance.ZoomSensitivity);
+        feZoomedFov.SetValue(InputManager.instance.ZoomFov);
     }
 
     public void UpdateCameraFov()

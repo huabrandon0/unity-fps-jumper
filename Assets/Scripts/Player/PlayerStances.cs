@@ -39,8 +39,8 @@ public class PlayerStances : TakesInput {
             return;
         }
 
-        this.crouchKeyDown = InputManager.GetKeyDown("Crouch");
-        this.crouchKeyUp = InputManager.GetKeyUp("Crouch");
+        this.crouchKeyDown = InputManager.instance.GetKeyDown("Crouch");
+        this.crouchKeyUp = InputManager.instance.GetKeyUp("Crouch");
     }
 
     protected override void ClearInput()

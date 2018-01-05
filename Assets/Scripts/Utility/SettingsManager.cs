@@ -11,88 +11,59 @@ using System.Text;
 
 public class SettingsManager: MonoBehaviour {
     
-    public static SettingsManager instance = null;
+    public static SettingsManager instance = null; // Singleton
+
+    public string filename = "settings.xml"; // Name of external file
+
     private Settings settings = null;
-    public float Sensitivity { get; set; }
-    public float Fov { get; set; }
-    public float ZoomSensitivity { get; set; }
-    public float ZoomFov { get; set; }
-    public Dictionary<string, KeyCode[]> Keybinds { get; private set; }
-
-    // Needed to update settings UI
-    public GameplayPanel gpScript;
-    public KeybindsPanel kbScript;
-
-    // XML variables
-    private string filePath;
+    private string filePath; // Path to the external file
 
 
     void Awake()
     {
-        // Singleton pattern
-        instance = this;
+        if (SettingsManager.instance == null)
+            SettingsManager.instance = this;
+        else if (SettingsManager.instance != this)
+            Destroy(this.gameObject);
 
-        // Get settings file if it exists
-        this.filePath = System.IO.Path.Combine(Application.streamingAssetsPath, "settings.xml");
+        DontDestroyOnLoad(this.gameObject);
+
+        this.filePath = System.IO.Path.Combine(Application.streamingAssetsPath, filename);
 
         LoadSettings();
     }
 
-    // Load this.settings from an external file, or use its default values if no such file exists
+    void OnApplicationQuit()
+    {
+        SaveSettings();
+    }
+
+    // Load settings from the external file
+    // If the file cannot be accessed, use default settings
     public void LoadSettings()
     {
         try
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(Settings));
+            XmlSerializer serializer = new XmlSerializer(typeof(SerializableSettings));
             Encoding encoding = Encoding.GetEncoding("UTF-8");
             StreamReader stream = new StreamReader(filePath, encoding);
-            this.settings = serializer.Deserialize(stream) as Settings;
+            this.settings = new Settings(serializer.Deserialize(stream) as SerializableSettings);
             stream.Close();
-            InitSettings();
         }
-        catch // TODO: Should be more specific about which exceptions to catch
+        catch
         {
-            // Use default settings if the file is not found
             this.settings = new Settings();
-            InitSettings();
             SaveSettings();
         }
-
-        gpScript.RefreshFloatsUI();
-        kbScript.RefreshKeybindsUI();
-        gpScript.UpdateCameraFov();
     }
 
-    public void InitSettings()
-    {
-        // Initialize settings
-        this.Sensitivity = this.settings.sens;
-        this.Fov = this.settings.fov;
-        this.ZoomSensitivity = this.settings.sens;
-        this.ZoomFov = this.settings.zoomFov;
-
-        InitKeybinds();
-    }
-
-    public void InitKeybinds()
-    {
-        // Initialize keybinds from the settings key/command pair of arrays
-        this.Keybinds = new Dictionary<string, KeyCode[]>();
-        for (int i = 0; i < this.settings.keys.Length; i++)
-        {
-            this.Keybinds.Add(this.settings.keys[i], this.settings.commands[i]);
-        }
-    }
-
-    // Save this.settings to an external file
+    // Save settings to the external file
     public void SaveSettings()
     {
-        PushSettings();
-
-        XmlSerializer serializer = new XmlSerializer(typeof(Settings));
+        XmlSerializer serializer = new XmlSerializer(typeof(SerializableSettings));
         Encoding encoding = Encoding.GetEncoding("UTF-8");
         StreamWriter stream = new StreamWriter(filePath, false, encoding);
-        serializer.Serialize(stream, this.settings);
+        serializer.Serialize(stream, this.settings.AsSerializable());
         stream.Close();
 
         #if UNITY_EDITOR
@@ -100,31 +71,14 @@ public class SettingsManager: MonoBehaviour {
         #endif
     }
 
-    // Push setting changes to this.settings
-    private void PushSettings()
+    public Settings GetSettings()
     {
-        this.settings.sens = this.Sensitivity;
-        this.settings.fov = this.Fov;
-        this.settings.zoomSens = this.ZoomSensitivity;
-        this.settings.zoomFov = this.ZoomFov;
-
-        this.settings.keys = this.Keybinds.Keys.ToArray();
-        this.settings.commands = this.Keybinds.Values.ToArray();
+        return new Settings(this.settings);
     }
 
-    // Reset this.settings using default values
-    public void ResetSettings()
+    // Overwrite settings with another Settings object
+    public void OverwriteSettings(Settings s)
     {
-        this.settings = new Settings();
-        InitSettings();
-
-        gpScript.RefreshFloatsUI();
-        kbScript.RefreshKeybindsUI();
-        gpScript.UpdateCameraFov();
-    }
-
-    void OnApplicationQuit()
-    {
-        SaveSettings();
+        this.settings.Set(s);
     }
 }

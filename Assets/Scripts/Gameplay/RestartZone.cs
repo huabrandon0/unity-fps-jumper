@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class RestartZone : MonoBehaviour {
 
-    public GameManager gmScript;
-
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player" && !this.gmScript.GetWinState())
-            this.gmScript.ResetGame();
+        if (other.tag == "Player" && !GameManager.instance.GetWinState())
+            GameManager.instance.ResetGame();
     }
 }

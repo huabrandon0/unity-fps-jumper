@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DetectZones : MonoBehaviour {
-
-    public GameManager gmScript;
+    
     public Timer tmrScript;
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        if (hit.gameObject.tag == "EndZone" && !this.gmScript.GetWinState())
+        if (hit.gameObject.tag == "EndZone" && !GameManager.instance.GetWinState())
         {
             this.tmrScript.PauseTime();
-            this.gmScript.WinGame();
+            GameManager.instance.WinGame();
         }
     }
 
@@ -23,8 +22,8 @@ public class DetectZones : MonoBehaviour {
             this.tmrScript.ResetTime();
             this.tmrScript.PauseTime();
 
-            if (this.gmScript.GetWinState())
-                this.gmScript.ResetGame(); // may not be necessary
+            if (GameManager.instance.GetWinState())
+                GameManager.instance.ResetGame(); // may not be necessary
         }
     }
 

@@ -2,11 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class InputManager {
+public class InputManager: MonoBehaviour {
 
-    public static bool GetKeyDown(string key)
+    public static InputManager instance = null; // Singleton
+
+    private Settings settings = null;
+
+    // Scripts that need to be updated based on settings changes
+    public GameplayPanel gpScript;
+    public KeybindsPanel kbScript;
+
+    void Awake()
     {
-        foreach (KeyCode val in SettingsManager.instance.Keybinds[key])
+        InputManager.instance = this;
+       
+        // Must change script execution order to SettingsManager before InputManager in order to call LoadSettings()
+        SettingsManager.instance.LoadSettings();
+        this.settings = SettingsManager.instance.GetSettings();
+        UpdateOthers();
+    }
+
+    public bool GetKeyDown(string key)
+    {
+        foreach (KeyCode val in this.settings.Keybinds[key])
         {
             if (Input.GetKeyDown(val))
                 return true;
@@ -14,9 +32,9 @@ public static class InputManager {
         return false;
     }
 
-    public static bool GetKey(string key)
+    public bool GetKey(string key)
     {
-        foreach (KeyCode val in SettingsManager.instance.Keybinds[key])
+        foreach (KeyCode val in this.settings.Keybinds[key])
         {
             if (Input.GetKey(val))
                 return true;
@@ -24,9 +42,9 @@ public static class InputManager {
         return false;
     }
 
-    public static bool GetKeyUp(string key)
+    public bool GetKeyUp(string key)
     {
-        foreach (KeyCode val in SettingsManager.instance.Keybinds[key])
+        foreach (KeyCode val in this.settings.Keybinds[key])
         {
             if (Input.GetKeyUp(val))
                 return true;
@@ -34,40 +52,66 @@ public static class InputManager {
         return false;
     }
 
-    public static void OverwriteKeybind(string key, KeyCode val, int index)
+    public void OverwriteKeybind(string key, KeyCode val, int index)
     {
-        if (!SettingsManager.instance.Keybinds.ContainsKey(key) || (index != 0 && index != 1))
+        if (!this.settings.Keybinds.ContainsKey(key) || (index != 0 && index != 1))
             return;
 
-        SettingsManager.instance.Keybinds[key][index] = val;
+        this.settings.Keybinds[key][index] = val;
     }
 
-    public static Dictionary<string, KeyCode[]> GetKeybindDictionary()
+    public void ApplySettings()
     {
-        return SettingsManager.instance.Keybinds;
+        SettingsManager.instance.OverwriteSettings(this.settings);
+        SettingsManager.instance.SaveSettings();
     }
 
-    public static float Sensitivity
+    public void ResetSettings()
     {
-        get { return SettingsManager.instance.Sensitivity; }
-        set { SettingsManager.instance.Sensitivity = value; }
+        this.settings = new Settings();
+        UpdateOthers();
     }
 
-    public static float Fov
+    public void RevertSettings()
     {
-        get { return SettingsManager.instance.Fov; }
-        set { SettingsManager.instance.Fov = value; }
+        this.settings = SettingsManager.instance.GetSettings();
+        UpdateOthers();
     }
 
-    public static float ZoomSensitivity
+    public Dictionary<string, KeyCode[]> Keybinds
     {
-        get { return SettingsManager.instance.ZoomSensitivity; }
-        set { SettingsManager.instance.ZoomSensitivity = value; }
+        get { return new Dictionary<string, KeyCode[]>(this.settings.Keybinds); }
+        private set { this.settings.Keybinds = value; }
     }
 
-    public static float ZoomFov
+    public float Sensitivity
     {
-        get { return SettingsManager.instance.ZoomFov; }
-        set { SettingsManager.instance.ZoomFov = value; }
+        get { return this.settings.Sensitivity; }
+        set { this.settings.Sensitivity = value; }
+    }
+
+    public float Fov
+    {
+        get { return this.settings.Fov; }
+        set { this.settings.Fov = value; }
+    }
+
+    public float ZoomSensitivity
+    {
+        get { return this.settings.ZoomSensitivity; }
+        set { this.settings.ZoomSensitivity = value; }
+    }
+
+    public float ZoomFov
+    {
+        get { return this.settings.ZoomFov; }
+        set { this.settings.ZoomFov = value; }
+    }
+
+    private void UpdateOthers()
+    {
+        gpScript.RefreshFloatsUI();
+        kbScript.RefreshKeybindsUI();
+        gpScript.UpdateCameraFov();
     }
 }

@@ -11,6 +11,8 @@ public class Projectile : MonoBehaviour {
     public LayerMask affectedLayers;
     public GameObject particles;
 
+    private bool hasExploded = false;
+
     void Start()
     {
         Invoke("EnableParticles", 0.2f);
@@ -18,6 +20,11 @@ public class Projectile : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
+        if (this.hasExploded)
+            return;
+
+        this.hasExploded = true;
+
         Destroy(this.gameObject);
 
         Instantiate(explosionPrefab, this.transform.position, this.transform.rotation);

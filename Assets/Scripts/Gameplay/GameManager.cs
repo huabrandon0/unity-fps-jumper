@@ -4,17 +4,22 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
+    public static GameManager instance = null;
+
     public Transform spawnPoint;
     public Timer tmrScript;
     public PlayerUI uiScript;
     public GameObject player;
+    public ScoreManager smScript;
 
     private bool hasWon = false;
 
-    void Update()
+    void Awake()
     {
-        if (InputManager.GetKeyDown("Reset"))
-            ResetGame();
+        if (GameManager.instance == null)
+            GameManager.instance = this;
+        else if (GameManager.instance != this)
+            Destroy(this.gameObject);
     }
 
     public void WinGame()
@@ -23,7 +28,13 @@ public class GameManager : MonoBehaviour {
             return;
         
         this.hasWon = true;
-        this.uiScript.VictoryScreen("YOUR TIME: " + tmrScript.timeText.text);
+
+        float time = tmrScript.GetRunningTime();
+
+        if (smScript.AddScore(time, 0))
+            smScript.SaveScores();
+        
+        this.uiScript.VictoryScreen(time, smScript.scores.ScoresList[0]);
     }
 
     public void ResetGame()

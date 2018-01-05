@@ -5,12 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class VictoryMenu : MonoBehaviour {
 
-    public GameManager gmScript;
     public string homeScene;
 
     public void ResetGame()
     {
-        this.gmScript.ResetGame();
+        GameManager.instance.ResetGame();
     }
 
     public void LoadHomeScreen()

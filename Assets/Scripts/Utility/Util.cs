@@ -25,6 +25,10 @@ public static class Util {
             SetLayersRecursively(child.gameObject, layer);
         }
     }
-}
 
-//[Serializable] public class FloatEditorEvent : UnityEvent <float, FloatEditor> {}
+    public static string GetTimeString(float time)
+    {
+        System.TimeSpan ts = System.TimeSpan.FromSeconds(time);
+        return string.Format("{0:00}:{1:00}.{2:000}", ts.Minutes, ts.Seconds, ts.Milliseconds);
+    }
+}

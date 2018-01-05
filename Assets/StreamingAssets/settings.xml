@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<SerializableSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <sens>1</sens>
-  <zoomSens>1</zoomSens>
+  <zoomSens>0.5</zoomSens>
   <fov>80</fov>
   <zoomFov>40</zoomFov>
   <keys>
@@ -83,4 +83,4 @@
       <KeyCode>None</KeyCode>
     </ArrayOfKeyCode>
   </commands>
-</Settings>
+</SerializableSettings>

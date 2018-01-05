@@ -34,7 +34,7 @@ public class WeaponManager : TakesInput {
 
         for (int i = 0; i < weps.Count; i++)
         {
-            if (InputManager.GetKeyDown("Weapon" + (i + 1)))
+            if (InputManager.instance.GetKeyDown("Weapon" + (i + 1)))
             {
                 this.switchingWeps = true;
                 this.switchWepIndex = i;

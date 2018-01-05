@@ -38,11 +38,11 @@ public class FPCamera : TakesInput {
             return;
 
         // Retrieve mouse input
-        float sens = this.IsZoomed ? InputManager.ZoomSensitivity : InputManager.Sensitivity;
+        float sens = this.IsZoomed ? InputManager.instance.ZoomSensitivity : InputManager.instance.Sensitivity;
         this.xRot -= Input.GetAxis("Mouse Y") * sens;
         this.yRot += Input.GetAxis("Mouse X") * sens;
 
-        this.zoom = InputManager.GetKeyDown("Zoom");
+        this.zoom = InputManager.instance.GetKeyDown("Zoom");
     }
 
     protected override void ClearInput()
@@ -113,7 +113,7 @@ public class FPCamera : TakesInput {
             return;
 
         this.IsZoomed = true;
-        this.cam.fieldOfView = InputManager.ZoomFov;
+        this.cam.fieldOfView = InputManager.instance.ZoomFov;
         this.scopeOverlay.SetActive(true);
         this.viewmodelCam.enabled = false;
     }
@@ -124,7 +124,7 @@ public class FPCamera : TakesInput {
             return;
 
         this.IsZoomed = false;
-        this.cam.fieldOfView = InputManager.Fov;
+        this.cam.fieldOfView = InputManager.instance.Fov;
         this.scopeOverlay.SetActive(false);
         this.viewmodelCam.enabled = true;
     }
@@ -132,8 +132,8 @@ public class FPCamera : TakesInput {
     public void RefreshFov()
     {
         if (this.IsZoomed)
-            this.cam.fieldOfView = InputManager.ZoomFov;
+            this.cam.fieldOfView = InputManager.instance.ZoomFov;
         else
-            this.cam.fieldOfView = InputManager.Fov;
+            this.cam.fieldOfView = InputManager.instance.Fov;
     }
 }

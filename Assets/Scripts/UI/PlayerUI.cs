@@ -19,7 +19,8 @@ public class PlayerUI : MonoBehaviour {
 
     private bool isInVictoryScreen;
     [SerializeField] private GameObject victoryScreen = null;
-    [SerializeField] private Text victoryText;
+    [SerializeField] private Text timeText;
+    [SerializeField] private Text bestTimeText;
     [SerializeField] private TakesInput[] disableWhileInVictoryScreen;
 
 
@@ -137,7 +138,7 @@ public class PlayerUI : MonoBehaviour {
         this.isTabbed = false;
     }
 
-    public void VictoryScreen(string txt)
+    public void VictoryScreen(float time, float bestTime)
     {
         // Undo other screens
         DisableScreens();
@@ -149,7 +150,8 @@ public class PlayerUI : MonoBehaviour {
         DisableInputs(this.disableWhileInVictoryScreen);
 
         // Change victory text
-        this.victoryText.text = txt;
+        this.timeText.text = "YOUR TIME: " + Util.GetTimeString(time);
+        this.bestTimeText.text = "BEST TIME: " + Util.GetTimeString(bestTime);
 
         // Enable victory screen
         this.victoryScreen.SetActive(true);
