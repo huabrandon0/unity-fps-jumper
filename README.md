@@ -1,4 +1,4 @@
-# FPS-Jumper
+# Unity-FPS-Jumper
 A single-player first-person timed "parkour" game that implements bunnyhopping, surfing, and rocketjumping.
 This game was made in Unity, without using assets other than Unity's Standard Assets and those made by me.
 
