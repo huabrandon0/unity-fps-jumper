@@ -12,4 +12,5 @@ This project, which I've named "Jumper", is a single-player first-person timed "
 - The math behind bunnyhopping and surfing
 
 [A gameplay video (as of 1/5/2018)](https://www.youtube.com/watch?v=PNhT1gIw1J8).
+
 [A gameplay video (as of 1/20/2018)](https://www.youtube.com/watch?v=xn2hIoO9lic). Changed game to be neon-themed.
