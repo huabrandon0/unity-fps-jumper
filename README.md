@@ -1,8 +1,15 @@
 # Unity-FPS-Jumper
-A single-player first-person timed "parkour" game that implements bunnyhopping, surfing, and rocketjumping.
-This game was made in Unity, without using assets other than Unity's Standard Assets and those made by me.
+This project, which I've named "Jumper", is a single-player first-person timed "parkour" game that is made in Unity. The player is placed at the starting point of a map and is supposed to reach the end point of the map as fast as possible. Notable movement mechanics that enable the player to reach the end of the map are bunnyhopping, surfing, and rocketjumping. Best times are saved locally.
 
-The goal of the game is to reach the end of a level as quick as possible.
-Best times are stored locally (using XML serialization, as are player settings).
+**Things I've learned how to do while working on this game**
+- Making simple animations and particle effects
+- Implementing a singleton pattern in a Monobehaviour class
+- Switching between UI menus
+- Using UI elements to overwrite class data
+- Persisting data through XML serialization
+- Making an in-game timer
+- Modeling objects in and importing them from Maya
+- The math behind bunnyhopping and surfing
 
 [A gameplay video (as of 1/5/2018)](https://www.youtube.com/watch?v=PNhT1gIw1J8).
+[A gameplay video (as of 1/20/2018)](https://www.youtube.com/watch?v=xn2hIoO9lic). Changed game to be neon-themed.
