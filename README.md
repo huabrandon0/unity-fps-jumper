@@ -1,5 +1,5 @@
 # Unity-FPS-Jumper
-This project, which I've named "Jumper", is a single-player first-person timed "parkour" game that is made in Unity. The player is placed at the starting point of a map and is supposed to reach the end point of the map as fast as possible. Notable movement mechanics that enable the player to reach the end of the map are bunnyhopping, surfing, and rocketjumping. Best times are saved locally.
+This project, which I've named "Jumper", is a first-person "parkour" game that is made in Unity. The player is placed at the starting point of a map and is supposed to reach the end point of the map as fast as possible. Notable movement mechanics that enable the player to reach the end of the map are bunnyhopping, surfing, and rocketjumping. Best times are saved locally.
 
 **Things I've learned how to do while working on this game**
 - Making simple animations and particle effects
