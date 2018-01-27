@@ -1,7 +1,7 @@
 # unity-fps-jumper
 This project, which I've named "Jumper", is a first-person "parkour" game that is made in Unity. The player is placed at the starting point of a map and is supposed to reach the end point of the map as fast as possible. Notable movement mechanics that enable the player to reach the end of the map are bunnyhopping, surfing, and rocketjumping. Best times are saved locally.
 
-**Things I've learned how to do while working on this game:**
+**Things I've learned/practiced while working on this game:**
 - Making simple animations and particle effects
 - Implementing a singleton pattern in a Monobehaviour class
 - Switching between UI menus
@@ -9,7 +9,7 @@ This project, which I've named "Jumper", is a first-person "parkour" game that i
 - Persisting data through XML serialization
 - Making an in-game timer
 - Modeling objects in and importing them from Maya
-- The math behind bunnyhopping and surfing
+- A lot of math dealing with vectors
 
 
 [A gameplay video (as of 1/5/2018)](https://www.youtube.com/watch?v=PNhT1gIw1J8).
