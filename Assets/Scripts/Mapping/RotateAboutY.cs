@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class RotateAboutY : MonoBehaviour {
 
-    public Vector3 rotationPoint;
-    public float rotateSpeed = 3f;
+    //public Vector3 rotationPoint;
+    public float rotateSpeed = 10f;
 
 	void Update () {
-        this.transform.RotateAround(this.rotationPoint, Vector3.up, rotateSpeed * Time.deltaTime);
+		this.transform.Rotate(new Vector3(0f, rotateSpeed * Time.deltaTime, 0f));
 	}
 }

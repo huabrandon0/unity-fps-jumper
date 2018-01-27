@@ -32,7 +32,7 @@ public class PlayerMovement : TakesInput {
     [SerializeField] private float groundAccel = 5f;
     [SerializeField] private float airAccel = 800f;
     [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float maxAirSpeed = 1.3f;
+    [SerializeField] private float maxAirSpeed = 1f;
     [SerializeField] private float surfAngleThreshold = 50f;
 
 

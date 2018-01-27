@@ -1,14 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Security.Policy;
 
 public class Scores {
 
     public List<float> ScoresList { get; private set; }
 
-    public Scores()
+    public Scores(int numScores)
     {
-        SerializableScores ss = new SerializableScores();
+		SerializableScores ss = new SerializableScores(numScores);
         Set(ss);
     }
 
@@ -44,8 +45,19 @@ public class Scores {
 [System.Serializable]
 public class SerializableScores {
 
-    public float[] scoresArray = new float[]
-    {
-        float.MaxValue
-    };
+	public float[] scoresArray;
+
+	public SerializableScores(int numScores)
+	{
+		this.scoresArray = new float[numScores];
+		for (int i = 0; i < numScores; i++)
+		{
+			this.scoresArray[i] = float.MaxValue;
+		};
+	}
+
+	public SerializableScores()
+	{
+		this.scoresArray = null;
+	}
 }

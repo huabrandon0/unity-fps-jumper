@@ -2,18 +2,22 @@
 using UnityEngine.UI;
 using System;
 using System.Collections.Generic;
+using TMPro;
 
 public class KeybindGridGenerator : MonoBehaviour {
 
     private Dictionary<string, KeyCode[]> keybinds;
     
-    public GameObject text;
-    public GameObject button;
+	public TextMeshProUGUI keybindLabelText;
+	public Button keybindValueButton;
+
+//    public GameObject text;
+//    public GameObject button;
     
     private bool isSettingKeybind;
     private string keyToSet;
     private int valIndex;
-    private GameObject valButton;
+	private Button valButton;
 
 
     void Start()
@@ -34,7 +38,7 @@ public class KeybindGridGenerator : MonoBehaviour {
                     //Debug.Log("New keybind: " + this.keyToSet + ", " + keycode.ToString() + ", " + this.valIndex);
                     // Update the InputManager and button text on the menu to reflect the keybind change
                     InputManager.instance.OverwriteKeybind(this.keyToSet, keycode, this.valIndex);
-                    this.valButton.GetComponentInChildren<Text>().text = keycode.ToString();
+					this.valButton.GetComponentInChildren<TextMeshProUGUI>().SetText(keycode.ToString());
                     this.isSettingKeybind = false;
                     break;
                 }
@@ -53,26 +57,40 @@ public class KeybindGridGenerator : MonoBehaviour {
 
         foreach(KeyValuePair<string, KeyCode[]> entry in this.keybinds)
         {
-            //Debug.Log(entry.Key + ": " + entry.Value[0] + ", " + entry.Value[1]);
-            string key = entry.Key;
-            GameObject keyText = Instantiate(this.text) as GameObject;
-            keyText.transform.SetParent(this.transform, false);
-            keyText.GetComponent<Text>().text = key;
+			string key = entry.Key;
+			TextMeshProUGUI keybindLabel = Instantiate(this.keybindLabelText) as TextMeshProUGUI;
+			keybindLabel.transform.SetParent(this.transform, false);
+			keybindLabel.SetText(key);
 
-            for (int i = 0; i < entry.Value.Length; i++)
-            {
-                int index = i;
-                KeyCode val = entry.Value[index];
-                GameObject valBtn = Instantiate(this.button) as GameObject;
-                valBtn.transform.SetParent(this.transform, false);
-                valBtn.GetComponentInChildren<Text>().text = val.ToString();
-                valBtn.GetComponent<Button>().onClick.AddListener(() => SetKeybind(key, val, index, valBtn));
-            }
+			for (int i = 0; i < entry.Value.Length; i++)
+			{
+				int index = i;
+				KeyCode val = entry.Value[index];
+				Button keybindValue = Instantiate(this.keybindValueButton) as Button;
+				keybindValue.transform.SetParent(this.transform, false);
+				keybindValue.GetComponentInChildren<TextMeshProUGUI>().SetText(val.ToString());
+				keybindValue.GetComponent<Button>().onClick.AddListener(() => SetKeybind(key, val, index, keybindValue));
+			}
+
+//            string key = entry.Key;
+//            GameObject keyText = Instantiate(this.text) as GameObject;
+//            keyText.transform.SetParent(this.transform, false);
+//            keyText.GetComponent<Text>().text = key;
+
+//            for (int i = 0; i < entry.Value.Length; i++)
+//            {
+//                int index = i;
+//                KeyCode val = entry.Value[index];
+//                GameObject valBtn = Instantiate(this.button) as GameObject;
+//                valBtn.transform.SetParent(this.transform, false);
+//                valBtn.GetComponentInChildren<Text>().text = val.ToString();
+//                valBtn.GetComponent<Button>().onClick.AddListener(() => SetKeybind(key, val, index, valBtn));
+//            }
         }
     }
 	
     // Start the "in the middle of setting a keybind" mode
-	void SetKeybind(string key, KeyCode val, int index, GameObject valBtn)
+	void SetKeybind(string key, KeyCode val, int index, Button valBtn)
     {
         //Debug.Log("Setting: " + key + ", " + val + ", " + index);
         this.isSettingKeybind = true;

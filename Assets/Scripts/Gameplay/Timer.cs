@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class Timer : MonoBehaviour {
 
@@ -10,7 +11,7 @@ public class Timer : MonoBehaviour {
     private bool pause = false;
     private float pauseStartTime = 0f;
 
-    public Text timeText;
+    public TextMeshProUGUI timeText;
 
 	void Start () {
         ResetTime();
@@ -61,6 +62,6 @@ public class Timer : MonoBehaviour {
     private void UpdateText(float time)
     {
         System.TimeSpan ts = System.TimeSpan.FromSeconds(time);
-        timeText.text = string.Format("{0:00}:{1:00}.{2:000}", ts.Minutes, ts.Seconds, ts.Milliseconds);
+		timeText.SetText(string.Format("{0:00}:{1:00}.{2:000}", ts.Minutes, ts.Seconds, ts.Milliseconds));
     }
 }

@@ -5,10 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class LevelSelectMenu : MonoBehaviour {
     
-    [SerializeField] private string scene1;
+    [SerializeField] private string sceneLevelPrefix;
 
-    public void PlayLevel()
+	public void PlayLevel(int i)
     {
-        SceneManager.LoadScene(scene1);
+		SceneManager.LoadScene(sceneLevelPrefix + i);
     }
 }

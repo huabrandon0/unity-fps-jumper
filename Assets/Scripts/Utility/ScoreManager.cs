@@ -34,7 +34,8 @@ public class ScoreManager : MonoBehaviour {
 
     void OnApplicationQuit()
     {
-        SaveScores();
+        //SaveScores();
+		//Bug: calling SaveScores() here seems to lose scores instead of saving them
     }
 	
     public void LoadScores()
@@ -49,7 +50,7 @@ public class ScoreManager : MonoBehaviour {
         }
         catch
         {
-            this.scores = new Scores();
+            this.scores = new Scores(100);
             SaveScores();
         }
     }

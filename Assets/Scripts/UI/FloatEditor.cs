@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using TMPro;
 
 public class FloatEditor : MonoBehaviour {
     
-    [SerializeField] private Text label;
+	//[SerializeField] private TextMeshProUGUI label;
+    //[SerializeField] private Text label;
     [SerializeField] private Slider slider;
     [SerializeField] private InputField inputField;
     private float val;

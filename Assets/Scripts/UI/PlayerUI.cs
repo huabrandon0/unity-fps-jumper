@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerUI : MonoBehaviour {
 
@@ -13,14 +14,10 @@ public class PlayerUI : MonoBehaviour {
     [SerializeField] private GameObject settingsMenu = null;
     [SerializeField] private TakesInput[] disableWhilePaused;
 
-    private bool isTabbed;
-    [SerializeField] private GameObject tabMenu = null;
-    [SerializeField] private TakesInput[] disableWhileTabbed;
-
     private bool isInVictoryScreen;
     [SerializeField] private GameObject victoryScreen = null;
-    [SerializeField] private Text timeText;
-    [SerializeField] private Text bestTimeText;
+    [SerializeField] private TextMeshProUGUI timeText;
+	[SerializeField] private TextMeshProUGUI bestTimeText;
     [SerializeField] private TakesInput[] disableWhileInVictoryScreen;
 
 
@@ -31,9 +28,6 @@ public class PlayerUI : MonoBehaviour {
 
         if (this.settingsMenu == null)
             Debug.LogError(GetType() + ": No settings menu object assigned");
-
-        if (this.tabMenu == null)
-            Debug.LogError(GetType() + ": No tab menu object assigned");
         
         DisableScreens();
         HideCursor();
@@ -45,26 +39,15 @@ public class PlayerUI : MonoBehaviour {
         if (!this.isInVictoryScreen)
         {
             // FIX LATER: change menu keycode to Esc only on the actual build
-            // Unity has weird hotkeys built-in the game tab, so we're using "T" in the meantime.
+            // Unity has weird hotkeys in the editor, so we're using "T" in the meantime.
             if (Input.GetKeyDown(KeyCode.T) || Input.GetKeyDown(KeyCode.Escape))
             {
                 if (!this.isPaused)
                 {
-                    if (this.isTabbed)
-                        UntabScreen();
-
                     PauseScreen();
                 }
                 else
                     UnpauseScreen();
-            }
-
-            if (Input.GetKeyDown(KeyCode.Tab) && !this.isPaused)
-            {
-                if (!this.isTabbed)
-                    TabScreen();
-                else
-                    UntabScreen();
             }
         }
     }
@@ -104,40 +87,6 @@ public class PlayerUI : MonoBehaviour {
         this.isPaused = false;
     }
 
-    public void TabScreen()
-    {
-        // Undo other screens
-        DisableScreens();
-
-        // Unlock and show cursor
-        ShowCursor();
-
-        // Disable Player's controls
-        DisableInputs(this.disableWhileTabbed);
-
-        // Enable tab menu
-        this.tabMenu.SetActive(true);
-
-        this.isTabbed = true;
-    }
-
-    public void UntabScreen()
-    {
-        if (!this.isTabbed)
-            return;
-
-        // Lock and hide cursor
-        HideCursor();
-
-        // Enable Player's controls
-        EnableInputs(this.disableWhileTabbed);
-
-        // Disable tab menu
-        this.tabMenu.SetActive(false);
-
-        this.isTabbed = false;
-    }
-
     public void VictoryScreen(float time, float bestTime)
     {
         // Undo other screens
@@ -150,8 +99,8 @@ public class PlayerUI : MonoBehaviour {
         DisableInputs(this.disableWhileInVictoryScreen);
 
         // Change victory text
-        this.timeText.text = "YOUR TIME: " + Util.GetTimeString(time);
-        this.bestTimeText.text = "BEST TIME: " + Util.GetTimeString(bestTime);
+		this.timeText.SetText("YOUR TIME: " + Util.GetTimeString(time));
+		this.bestTimeText.SetText("BEST TIME: " + Util.GetTimeString(bestTime));
 
         // Enable victory screen
         this.victoryScreen.SetActive(true);
@@ -203,7 +152,6 @@ public class PlayerUI : MonoBehaviour {
     private void DisableScreens()
     {
         UnpauseScreen();
-        UntabScreen();
         UnVictoryScreen();
     }
 }

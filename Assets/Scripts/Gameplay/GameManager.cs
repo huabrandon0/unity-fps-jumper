@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Text.RegularExpressions;
 
 public class GameManager : MonoBehaviour {
 
@@ -10,7 +12,7 @@ public class GameManager : MonoBehaviour {
     public Timer tmrScript;
     public PlayerUI uiScript;
     public GameObject player;
-    public ScoreManager smScript;
+	public string scenePrefix;
 
     private bool hasWon = false;
 
@@ -31,10 +33,18 @@ public class GameManager : MonoBehaviour {
 
         float time = tmrScript.GetRunningTime();
 
-        if (smScript.AddScore(time, 0))
-            smScript.SaveScores();
-        
-        this.uiScript.VictoryScreen(time, smScript.scores.ScoresList[0]);
+		Regex r = new Regex(this.scenePrefix + @"(\d+)");
+		Match m = r.Match(SceneManager.GetActiveScene().name);
+		if (m.Success)
+		{
+			int levelIndex = int.Parse(m.Groups[1].Value) - 1;
+			if (ScoreManager.instance.AddScore(time, levelIndex))
+				ScoreManager.instance.SaveScores();
+			
+			this.uiScript.VictoryScreen(time, ScoreManager.instance.scores.ScoresList[levelIndex]);
+		}
+		else
+			Debug.Log("Error: active scene name does not correspond with scene prefix.");
     }
 
     public void ResetGame()
