@@ -18,4 +18,4 @@ This project, which I've named "Jumper", is a first-person "parkour" game that i
 
 [A gameplay video (as of 1/25/2018)](https://www.youtube.com/watch?v=oYlQfq30Yms). Significant changes to main menu UI.
 
-[A gameplay video (as of 1/27/2018)[(https://www.youtube.com/watch?v=mIAIJCFi6vQ). Added multiple levels and a records menu.
+[A gameplay video (as of 1/27/2018)](https://www.youtube.com/watch?v=mIAIJCFi6vQ). Added multiple levels and a records menu).
